@@ -179,7 +179,7 @@ export default function Home() {
   const VendorInfo = () => {
     const totalVendors = newPlaces.length + places.length;
     return (
-      <div className="flex items-center absolute top-16 md:left-1/3 bg-[#fff] p-4 rounded-2xl shadow-xl">
+      <div className="flex items-center absolute top-16 md:left-1/3 bg-[#fff] p-6 rounded-3xl shadow-2xl">
         <div className="flex flex-col md:flex-row">
           <Vendors className="mx-auto md:ms-0" />
           <div className="mx-5">
