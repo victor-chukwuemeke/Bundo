@@ -134,7 +134,7 @@ export default function Home() {
     let c = a + b;
     return (
       <>
-            <div className="flex items-center absolute top-16 left-1/3 bg-[#fff] p-4 rounded-2xl shadow-xl">
+            <div className="flex items-center absolute top-16 md:left-1/3 bg-[#fff] p-4 rounded-2xl shadow-xl">
               <div><Vendors /></div>
               <div className="mx-5">
                 <p className="text-[#302F2C] text-lg">
