@@ -38,7 +38,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <Link href="/home" className="text-white">
-                <Image src={FullLogo} width={100} className="img-width" height={100} />
+                <Image src={FullLogo} alt="..." width={100} className="img-width" height={100} />
               </Link>
             </div>
             <div className="-mx-1 md:mx-3 relative top-right">

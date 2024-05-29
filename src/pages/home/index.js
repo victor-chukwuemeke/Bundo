@@ -9,9 +9,6 @@ import SearchButton from '../../../public/_assets/icons/search_button.svg';
 import SearchIcon from '../../../public/_assets/icons/search_icon.svg';
 import Vendors from '../../../public/_assets/icons/vendors.svg';
 import Close from '../../../public/_assets/icons/close-x.svg';
-import Fullscreen from '../../../public/_assets/images/fullScreen.png';
-// import Vendors from '../../../public/_assets/images/vendors.png';
-import Image from "next/image";
 
 // Validation schema
 const configureSchema = Yup.object().shape({
@@ -132,13 +129,16 @@ export default function Home() {
   };
 
   const Vendor = () => {
+    let a = newPlaces?.length;
+    let b = places?.length;
+    let c = a + b;
     return (
       <>
             <div className="flex items-center absolute top-16 left-1/3 bg-[#fff] p-4 rounded-2xl shadow-xl">
               <div><Vendors /></div>
               <div className="mx-5">
                 <p className="text-[#302F2C] text-lg">
-                  We found {places?.length} Vendors for you
+                  We found {c} Vendor(s) for you😀
                 </p> 
                 <p className="mt-3 text-[#302F2C]">
                   Tap on any of them to connect with them
@@ -209,9 +209,7 @@ export default function Home() {
                 icon={CustomMarker}
               />
             ))}
-            <div>
-              <Image src={Fullscreen} />
-            </div>
+           
             {selectedPlace && (
               <InfoWindowF
                 position={{ lat: selectedPlace.latitude, lng: selectedPlace.longitude }}
@@ -227,23 +225,10 @@ export default function Home() {
                 </div>
               </InfoWindowF>
             )}
-            {/* {places.map((place) => (
-              <InfoWindowF
-                key={place.id}
-                position={{ lat: place.lat, lng: place.long }}
-                anchor={<MarkerF position={{ lat: place.lat, lng: place.long }} />}
-                zIndex={1}
-                options={{ pixelOffset: { width: 0, height: -40 } }}
-                onCloseClick={() => setSelectedPlace(null)}
-              >
-                <div>
-                  <p>Latitude: {place.lat}</p>
-                  <p>Longitude: {place.long}</p>
-                </div>
-              </InfoWindowF>
-            ))} */}
           </GoogleMap>
-          ): (<p>it is loading...</p>)}
+          ): (
+          <p>it is loading...</p>
+          )}
           {
             close &&
             <Vendor />  

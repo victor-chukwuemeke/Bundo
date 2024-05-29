@@ -5,9 +5,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 -switch branch to working.
 use
  ```bash
-npm install
+npm install --legacy-peer-deps 
+(This is because there is an old package used and there hasn't been any form of update for it)
 ```
-(this is to install all packages used on the project).
 Then, run the development server:
 
 ```bash
