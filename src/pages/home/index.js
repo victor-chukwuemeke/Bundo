@@ -42,6 +42,27 @@ const getLatLonForCity = async (city) => {
   return { lat, lng };
 };
 
+const saveLocations = (locations) => {
+  const timestampedData = {
+    data: locations,
+    timestamp: Date.now()
+  };
+  localStorage.setItem('newPlaces', JSON.stringify(timestampedData));
+};
+
+const loadLocations = () => {
+  const savedData = localStorage.getItem('newPlaces');
+  if (savedData) {
+    const { data, timestamp } = JSON.parse(savedData);
+    const now = Date.now();
+    const diff = (now - timestamp) / (1000 * 60); // difference in minutes
+    if (diff < 100) {
+      return data;
+    }
+  }
+  return [];
+};
+
 export default function Home() {
   const [places, setPlaces] = useState([]);
   const [showVendorInfo, setShowVendorInfo] = useState(true);
@@ -56,20 +77,18 @@ export default function Home() {
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   useEffect(() => {
-    const loadLocations = async () => {
+    const initialize = async () => {
       const data = await fetchLocations();
       setPlaces(data);
       if (data.length > 0) setPosition({ lat: data[0].lat, lng: data[0].long });
-    };
-    loadLocations();
 
-    const savedNewPlaces = JSON.parse(localStorage.getItem('newPlaces'));
-    if (savedNewPlaces) {
-      setNewPlaces(savedNewPlaces);
+      const savedNewPlaces = loadLocations();
       if (savedNewPlaces.length > 0) {
+        setNewPlaces(savedNewPlaces);
         setPosition({ lat: savedNewPlaces[0].latitude, lng: savedNewPlaces[0].longitude });
       }
-    }
+    };
+    initialize();
   }, []);
 
   useEffect(() => {
@@ -92,7 +111,7 @@ export default function Home() {
         const updatedNewPlaces = [...newPlaces, newPlace];
         setNewPlaces(updatedNewPlaces);
         setPosition({ lat: lat(), lng: lng() });
-        localStorage.setItem('newPlaces', JSON.stringify(updatedNewPlaces));
+        saveLocations(updatedNewPlaces);
       }
     });
   }, [isLoaded, newPlaces]);
@@ -109,7 +128,7 @@ export default function Home() {
       const updatedNewPlaces = [...newPlaces, newPlace];
       setNewPlaces(updatedNewPlaces);
       setPosition({ lat, lng });
-      localStorage.setItem('newPlaces', JSON.stringify(updatedNewPlaces));
+      saveLocations(updatedNewPlaces);
     } catch (error) {
       console.error('Error fetching coordinates:', error);
     }
@@ -127,7 +146,7 @@ export default function Home() {
     const updatedNewPlaces = [...newPlaces, newPlace];
     setNewPlaces(updatedNewPlaces);
     setPosition({ lat, lng });
-    localStorage.setItem('newPlaces', JSON.stringify(updatedNewPlaces));
+    saveLocations(updatedNewPlaces);
   };
 
   const handleMarkerDragEnd = (event, place, isNewPlace) => {
@@ -141,7 +160,7 @@ export default function Home() {
       };
       if (isNewPlace) {
         setNewPlaces(updatedPlaces);
-        localStorage.setItem('newPlaces', JSON.stringify(updatedPlaces));
+        saveLocations(updatedPlaces);
       } else {
         setPlaces(updatedPlaces);
       }
@@ -162,11 +181,11 @@ export default function Home() {
     return (
       <div className="flex items-center absolute top-16 md:left-1/3 bg-[#fff] p-4 rounded-2xl shadow-xl">
         <div className="flex flex-col md:flex-row">
-        <Vendors className="mx-auto md:ms-0" />
-        <div className="mx-5">
-          <p className="text-[#302F2C] text-lg">We found {totalVendors} Vendor(s) for you 😀</p>
-          <p className="mt-3 text-[#302F2C]">Tap on any of them to connect with them</p>
-        </div>
+          <Vendors className="mx-auto md:ms-0" />
+          <div className="mx-5">
+            <p className="text-[#302F2C] text-lg">We found {totalVendors} Vendor(s) for you 😀</p>
+            <p className="mt-3 text-[#302F2C]">Tap on any of them to connect with them</p>
+          </div>
         </div>
         <div className="cursor-pointer" onClick={() => setShowVendorInfo(false)}><Close /></div>
       </div>
@@ -261,3 +280,4 @@ export default function Home() {
     </div>
   );
 }
+
