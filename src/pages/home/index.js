@@ -20,6 +20,10 @@ const containerStyle = {
   height: "70vh",
 };
 
+// const newClass = {
+//   width: "100%"
+// }
+
 const fetchLocations = async () => {
   try {
     const response = await fetch('https://qtg9k1vhp3.execute-api.us-west-2.amazonaws.com/Stage/');
